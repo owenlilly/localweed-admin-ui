@@ -1,0 +1,4 @@
+# need for custom ci tool
+steps:
+  - npm install
+  - npm run build
