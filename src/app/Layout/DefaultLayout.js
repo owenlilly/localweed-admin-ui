@@ -2,8 +2,7 @@ import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import * as router from 'react-router-dom';
 import { Container } from 'reactstrap';
-import {connect } from 'react-redux';
-import {addData} from "../../actions"
+import { connect } from 'react-redux';
 import {
     AppAside,
     AppFooter,
@@ -20,8 +19,11 @@ import {
 import navigation from '../../_nav';
 // routes config
 import routes from '../../routes';
-import {requestLoginUserData} from "app/AuthUser/actions"
-import {getLoginToken} from "app/token"
+import { requestLoginUserData } from "app/AuthUser/actions"
+import ReduxToastr from 'react-redux-toastr'
+
+import { getLoginToken } from "app/token"
+
 const DefaultAside = React.lazy(() => import('./DefaultAside'));
 const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
 const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
@@ -31,7 +33,7 @@ class DefaultLayout extends Component {
         if (getLoginToken()) {
             // get login user data
             this.props.requestLoginUserData()
-        }else{
+        } else {
             this.props.history.push('/login')
         }
     }
@@ -52,7 +54,14 @@ class DefaultLayout extends Component {
     render() {
         return (
             this.props.authUser.data ? <div className="app">
-
+                <ReduxToastr
+                    timeOut={4000}
+                    newestOnTop={false}
+                    preventDuplicates
+                    position="top-right"
+                    transitionIn="fadeIn"
+                    transitionOut="fadeOut"
+                    closeOnToastrClick />
                 <AppHeader fixed>
                     <Suspense fallback={this.loading()}>
                         <DefaultHeader onLogout={e => this.signOut(e)} />
@@ -103,13 +112,13 @@ class DefaultLayout extends Component {
                         <DefaultFooter />
                     </Suspense>
                 </AppFooter>
-            </div>: <h2>zzzLoading</h2>
-        ) 
+            </div> : <Suspense fallback={this.loading()}></Suspense>
+        )
     }
 }
 
-export default connect(state=>({
-    basic:state.basic,
-    authUser:state.authUser,
-}),{addData,requestLoginUserData})(DefaultLayout)
+export default connect(state => ({
+    basic: state.basic,
+    authUser: state.authUser,
+}), { requestLoginUserData })(DefaultLayout)
 // export default DefaultLayout;

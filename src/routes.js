@@ -35,11 +35,17 @@ const Typography = React.lazy(() => import('./views/Theme/Typography'));
 const Widgets = React.lazy(() => import('./views/Widgets/Widgets'));
 const Users = React.lazy(() => import('./views/Users/Users'));
 const User = React.lazy(() => import('./views/Users/User'));
+const Pages = React.lazy(() => import('./app/modules/Pages/List'));
+const PagesAdd = React.lazy(() => import('./app/modules/Pages/Add'));
+const PagesEdit = React.lazy(() => import('./app/modules/Pages/Edit'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  { path: '/pages', exact: true, name: 'Pages', component: Pages },
+  { path: '/pages/add', exact: true, name: 'Add', component: PagesAdd },
+  { path: '/pages/edit/:id', exact: true, name: 'Edit', component: PagesEdit },
   { path: '/theme', exact: true, name: 'Theme', component: Colors },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },

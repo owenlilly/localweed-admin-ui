@@ -8,11 +8,9 @@ function* getLoginUserData() {
     try {
         // check token is valid
         const res = yield call(Api.getUserData);
-        console.log(res)
         yield put(receiveLoginUserData(res.data))
 
     } catch (e) {
-        console.log('hereee')
         yield put(setUserLoginStatus(false))
         console.log(e);
     }

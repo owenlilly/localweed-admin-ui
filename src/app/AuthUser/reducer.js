@@ -21,7 +21,6 @@ export default (state = initialState, {type, payload = null}) => {
             };
             break;
         case Actions.RECEIVE_USER_DATA:
-            console.log('ddddddddddddd',payload)
             state = {
                 ...state,
                 loginDataRequested:true,

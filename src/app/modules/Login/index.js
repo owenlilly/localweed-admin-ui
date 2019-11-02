@@ -4,13 +4,16 @@ import { connect } from 'react-redux';
 
 
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row, Alert } from 'reactstrap';
-import validate from "../../../form/FormValidations"
+import validate from "app/form/FormValidations"
 import { requestAuthenticateLoginData } from "./actions"
-import { setLoginToken } from "app/token"
+import { setLoginToken, getLoginToken } from "app/token"
 
 class LoginContainer extends Component {
-    onSubmit = (values) => {
-        this.props.requestAuthenticateLoginData(values)
+
+    componentWillMount() {
+        if (getLoginToken()) {
+            this.props.history.push('/')
+        }
     }
     componentDidUpdate(prevProps) {
         if (!prevProps.authLogin.loginData && this.props.authLogin.loginData) {
@@ -18,6 +21,10 @@ class LoginContainer extends Component {
             setLoginToken(this.props.authLogin.loginData.token)
             this.props.history.push('/')
         }
+    }
+
+    onSubmit = (values) => {
+        this.props.requestAuthenticateLoginData(values)
     }
     render() {
         return (
