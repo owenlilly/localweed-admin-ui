@@ -1,4 +1,4 @@
-export const localApiUrl = 'http://localhost:8888/api'
+export const localApiUrl = '/api'
 
 const cookieTokenName = 'app_token';
 export const setLoginToken = (token) => {
