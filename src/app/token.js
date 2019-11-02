@@ -1,5 +1,4 @@
-export const localApiUrl = 'http://localhost:8888/api'
-
+export const localApiUrl = process.env.REACT_APP_API_URL
 const cookieTokenName = 'app_token';
 export const setLoginToken = (token) => {
     localStorage.setItem(cookieTokenName, token);

@@ -54,7 +54,7 @@
     "redux-devtools": "^3.5.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "REACT_APP_API_URL='http://localhost:8888/api' react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:cov": "npm test -- --coverage --watchAll=false",

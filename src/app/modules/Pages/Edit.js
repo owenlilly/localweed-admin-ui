@@ -4,8 +4,9 @@ import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import { Form as ReactForm } from 'react-final-form'
-import { requestPageSave, resetPageForm, requestPageData } from "./actions"
+import { requestPageSave, resetPageForm, requestPageData, previewPageContent } from "./actions"
 import { Redirect } from 'react-router-dom';
+import Preview from "./Preview"
 
 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -57,6 +58,8 @@ class PagesAddForm extends Component {
         return (
             this.props.pages.saveSuccess ? <Redirect to="/pages" /> :
                 <div className="animated fadeIn">
+                    <Preview />
+
                     {this.props.pages.edit ? <ReactForm
                         onSubmit={this.onSubmit}
                         initialValues={this.props.pages.edit}
@@ -66,9 +69,16 @@ class PagesAddForm extends Component {
                                 isEdit={true}
                                 onEditorStateChange={this.onEditorStateChange}
                                 editorState={this.state.editorState}
-                                saveInProgress = {this.props.pages.saveInProgress}
+                                saveInProgress={this.props.pages.saveInProgress}
                                 goToPages={this.goToPages}
                                 handleSubmit={handleSubmit}
+                                previewPageContent={() => {
+                                    console.log('heeeee')
+                                    console.log(draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())))
+                                    this.props.previewPageContent(draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())))
+
+                                }}
+
                             />
                         )}
                     /> : <div className="animated fadeIn pt-1 text-center">Loading...</div>}
@@ -79,4 +89,4 @@ class PagesAddForm extends Component {
 }
 export default connect(state => ({
     pages: state.pages
-}), { requestPageSave, resetPageForm, requestPageData })(PagesAddForm)
+}), { requestPageSave, resetPageForm, requestPageData, previewPageContent })(PagesAddForm)

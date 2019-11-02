@@ -8,8 +8,18 @@ export const REQUEST_PAGE_SAVE = "REQUEST_PAGE_SAVE";
 export const RECEIVE_PAGE_SAVE = "RECEIVE_PAGE_SAVE";
 export const REQUEST_PAGE_DELETE = "REQUEST_PAGE_DELETE";
 export const RECEIVE_PAGE_DELETE = "RECEIVE_PAGE_DELETE";
+export const PREVIEW_PAGE_CONTENT = "PREVIEW_PAGE_CONTENT";
 
 
+export const previewPageContent = (content) => ({
+    type: PREVIEW_PAGE_CONTENT,
+    payload: content
+});
+export const cancelPreviewPageContent = () => ({
+    type: PREVIEW_PAGE_CONTENT,
+    payload: null
+
+});
 export const resetPageForm = () => ({
     type: RESET_PAGE_FORM,
 });
@@ -30,9 +40,9 @@ export const receivePageData = (data) => ({
     type: RECEIVE_PAGE_DATA,
     payload: data
 });
-export const requestPageSave = (data,id=null) => ({
+export const requestPageSave = (data, id = null) => ({
     type: REQUEST_PAGE_SAVE,
-    payload: {data,id}
+    payload: { data, id }
 });
 export const receivePageSave = (data) => ({
     type: RECEIVE_PAGE_SAVE,

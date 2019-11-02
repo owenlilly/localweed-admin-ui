@@ -14,7 +14,7 @@ import notifications from "app/notification";
 
 function* requestList(action) {
     try {
-        const res = yield call(Api.get, 'pages', action.payload);
+        const res = yield call(Api.get, 'admin/pages', action.payload);
         yield put(receivePageList(res.data))
     } catch (e) {
         console.log(e);

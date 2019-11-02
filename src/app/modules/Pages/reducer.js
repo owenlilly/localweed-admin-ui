@@ -7,12 +7,19 @@ let initialState = {
     edit: null,
     saveInProgress: false,
     saveSuccess: false,
+    previewContent:null,
 };
 export default (state = initialState, { type, payload = null }) => {
     switch (type) {
         case Actions.RESET_PAGE_FORM:
             state = {
                 ...initialState,
+            };
+            break;
+        case Actions.PREVIEW_PAGE_CONTENT:
+            state = {
+                ...state,
+                previewContent:payload
             };
             break;
         case Actions.REQUEST_PAGE_LIST:

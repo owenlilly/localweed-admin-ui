@@ -84,8 +84,9 @@ class PageForm extends Component {
                             </Row>
                         </CardBody>
                         <CardFooter>
-                            <Button type="submit" size="sm" color="primary" disabled={this.props.saveInProgress}><i className="fa fa-check"></i> Save</Button>
-                            <Button type="button" size="sm" color="danger" onClick={this.props.goToPages}><i className="fa fa-ban"></i> Cancel</Button>
+                            <Button type="submit" size="sm" color="primary" disabled={this.props.saveInProgress} className="mr-2"><i className="fa fa-check"></i> Save</Button>
+                            <Button type="button" size="sm" color="danger" onClick={this.props.goToPages} className="mr-2"><i className="fa fa-ban"></i> Cancel</Button>
+                            <Button type="button" size="sm" onClick={this.props.previewPageContent}><i className="fa fa-eye"></i> Preview</Button>
                         </CardFooter>
                     </Card>
                 </Col>
