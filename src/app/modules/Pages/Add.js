@@ -3,19 +3,19 @@ import { connect } from "react-redux"
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import { Form as ReactForm } from 'react-final-form'
-import { requestPageSave, resetPageForm, previewPageContent } from "./actions"
+import Actions from "./actions" 
 import { Redirect } from 'react-router-dom';
 import PageForm from "./Form"
 import Preview from "./Preview"
 
 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-
+const { requestSave, resetForm, previewPageContent } = Actions
 
 class PagesAddForm extends Component {
 
     componentWillUnmount() {
-        this.props.resetPageForm()
+        this.props.resetForm()
     }
     state = {
         editorState: EditorState.createEmpty(),
@@ -27,14 +27,14 @@ class PagesAddForm extends Component {
         });
     };
     onSubmit = (values) => {
-        this.props.requestPageSave({
+        this.props.requestSave({
             ...values,
             contents: draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
         })
     }
 
     goToPages = () => {
-        this.props.history.push('/pages')
+        this.props.history.goBack()
     }
 
     render() {
@@ -66,4 +66,4 @@ class PagesAddForm extends Component {
 }
 export default connect(state => ({
     pages: state.pages
-}), { requestPageSave, resetPageForm, previewPageContent })(PagesAddForm)
+}), { requestSave, resetForm, previewPageContent })(PagesAddForm)

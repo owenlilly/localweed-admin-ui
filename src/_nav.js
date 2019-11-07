@@ -14,5 +14,10 @@ export default {
             url: '/pages',
             icon: 'icon-pencil',
         },
+        {
+            name: 'Stores',
+            url: '/stores',
+            icon: 'cui-home',
+        },
     ],
 };

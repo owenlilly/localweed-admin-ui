@@ -1,9 +1,9 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { cancelPreviewPageContent } from "./actions"
+import Actions from "./actions"
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
-
+const {cancelPreviewPageContent} = Actions
 class PreviewConatiner extends Component {
     render() {
         return <Modal isOpen={this.props.previewContent ? true : false}

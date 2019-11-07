@@ -4,8 +4,7 @@ import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import { Form as ReactForm } from 'react-final-form'
-import { requestPageSave, resetPageForm, requestPageData, previewPageContent } from "./actions"
-import { Redirect } from 'react-router-dom';
+import Actions from "./actions"
 import Preview from "./Preview"
 
 
@@ -15,10 +14,10 @@ import PageForm from "./Form"
 class PagesAddForm extends Component {
 
     componentWillUnmount() {
-        this.props.resetPageForm()
+        this.props.resetForm()
     }
     componentWillMount() {
-        this.props.requestPageData(this.props.match.params.id)
+        this.props.requestData(this.props.match.params.id)
     }
 
     componentDidUpdate(prev) {
@@ -44,49 +43,48 @@ class PagesAddForm extends Component {
         });
     };
     onSubmit = (values) => {
-        this.props.requestPageSave({
+        this.props.requestSave({
             ...values,
             contents: draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
         }, this.props.match.params.id)
     }
 
     goToPages = () => {
-        this.props.history.push('/pages')
+        this.props.history.goBack();
     }
 
     render() {
         return (
-            this.props.pages.saveSuccess ? <Redirect to="/pages" /> :
-                <div className="animated fadeIn">
-                    <Preview />
+            <div className="animated fadeIn">
+                <Preview />
 
-                    {this.props.pages.edit ? <ReactForm
-                        onSubmit={this.onSubmit}
-                        initialValues={this.props.pages.edit}
-                        render={({ handleSubmit }) => (
+                {this.props.pages.edit ? <ReactForm
+                    onSubmit={this.onSubmit}
+                    initialValues={this.props.pages.edit}
+                    render={({ handleSubmit }) => (
 
-                            <PageForm
-                                isEdit={true}
-                                onEditorStateChange={this.onEditorStateChange}
-                                editorState={this.state.editorState}
-                                saveInProgress={this.props.pages.saveInProgress}
-                                goToPages={this.goToPages}
-                                handleSubmit={handleSubmit}
-                                previewPageContent={() => {
-                                    console.log('heeeee')
-                                    console.log(draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())))
-                                    this.props.previewPageContent(draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())))
+                        <PageForm
+                            isEdit={true}
+                            onEditorStateChange={this.onEditorStateChange}
+                            editorState={this.state.editorState}
+                            saveInProgress={this.props.pages.saveInProgress}
+                            goToPages={this.goToPages}
+                            handleSubmit={handleSubmit}
+                            previewPageContent={() => {
+                                console.log('heeeee')
+                                console.log(draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())))
+                                this.props.previewPageContent(draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())))
 
-                                }}
+                            }}
 
-                            />
-                        )}
-                    /> : <div className="animated fadeIn pt-1 text-center">Loading...</div>}
-                </div>
+                        />
+                    )}
+                /> : <div className="animated fadeIn pt-1 text-center">Loading...</div>}
+            </div>
 
         );
     }
 }
 export default connect(state => ({
     pages: state.pages
-}), { requestPageSave, resetPageForm, requestPageData, previewPageContent })(PagesAddForm)
+}), { ...Actions })(PagesAddForm)
