@@ -4,6 +4,7 @@ import { all, fork } from "redux-saga/effects";
 import * as userSaga from "./AuthUser/saga"
 import * as authLoginSaga from  "./modules/Login/saga"
 import * as pagesSaga from  "./modules/Pages/saga"
+import * as storesSaga from  "./modules/Stores/saga"
 
 export default function* rootSaga() {
     yield all(
@@ -12,6 +13,7 @@ export default function* rootSaga() {
             ...Object.values(userSaga),
             ...Object.values(authLoginSaga),
             ...Object.values(pagesSaga),
+            ...Object.values(storesSaga),
             // ...Object.values(tabs),
         ].map(fork)
     );

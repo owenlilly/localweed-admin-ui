@@ -1,6 +1,7 @@
 import _ from "lodash";
 
 const required = value => (value ? undefined : "This filed is required");
+const noValidate = () => undefined;
 const maxLength = max => value =>
     value && value.length > max
         ? `This filed maximum length ${max} characters`
@@ -64,7 +65,13 @@ const creditCardNumber = (ccNum) => {
 
     return !isValid ? "Please provide a valid Visa number!" : undefined;
 }
+const uploadImageOnly = file => {
+    if (file && file.type) {
 
+        return (/\/(gif|jpg|jpeg|tiff|png)$/i).test(file.type) ? undefined : "Upload images only";
+    }
+    return undefined;
+}
 export default {
     required,
     maxLength,
@@ -75,5 +82,7 @@ export default {
     maxValue,
     tooOld,
     aol,
-    creditCardNumber
+    creditCardNumber,
+    uploadImageOnly,
+    noValidate
 };

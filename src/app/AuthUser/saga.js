@@ -12,6 +12,8 @@ function* getLoginUserData() {
 
     } catch (e) {
         yield put(setUserLoginStatus(false))
+        yield call(removeLoginToken);
+
         console.log(e);
     }
 }

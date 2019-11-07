@@ -1,4 +1,4 @@
-export const localApiUrl = '/api'
+export const localApiUrl = process.env.REACT_APP_API_URL
 
 const cookieTokenName = 'app_token';
 export const setLoginToken = (token) => {

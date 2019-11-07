@@ -1,17 +1,18 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { Card, CardBody, CardHeader, Col, Row, Table, Button, ButtonGroup, Badge } from 'reactstrap';
-import { requestPageList, requestPageDelete } from "./actions"
-import _ from "lodash"
+import { UncontrolledTooltip, Card, CardBody, CardHeader, Col, Row, Button, Badge } from 'reactstrap';
+import Actions from "./actions"
 import { Link } from "react-router-dom"
-import notifications from "app/notification";
+import Preview from "./Preview"
 
+import DataTable from "../base/DataTable"
+const { requestList, requestDelete, previewPageContent } = Actions
 class PagesList extends Component {
-    componentDidMount() {
-        this.props.requestPageList()
-    }
+
+
     render() {
         return <div className="animated fadeIn">
+            <Preview />
             <Row>
                 <Col xs="12" lg="12">
                     <Card>
@@ -22,46 +23,34 @@ class PagesList extends Component {
                             </div>
                         </CardHeader>
                         <CardBody>
-                            {this.props.pages.requestList ? <div className="animated fadeIn pt-1 text-center">Loading...</div> :
-                                <Table hover responsive>
-                                    <thead>
-                                        <tr>
-                                            <th>Title</th>
-                                            <th>Slug</th>
-                                            <th>Status</th>
-                                            <th style={{ textAlign: "right" }}>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {_.map(this.props.pages.list, (page,k) => <tr key={k}>
-                                            <td><Link to={"/pages/edit/" + page.id}> {page.title}</Link></td>
-                                            <td>{page.slug}</td>
-                                            <td>{page.status ? <Badge color="success">Active</Badge> : <Badge color="secondary">Inactive</Badge>}</td>
-                                            <td style={{ textAlign: "right" }}>
-                                                <ButtonGroup>
+                            <DataTable {...this.props}
+                                list={this.props.pages.list}
+                                headers={['Title', 'Slug', 'Status']}
+                                columns={['title', 'slug', 'status']}
+                                customeView={{
+                                    'title': row => <Link to={"/pages/edit/" + row.id}> {row.title}</Link>,
+                                    'status': row => row.status ? <Badge color="success">Active</Badge> : <Badge color="secondary">Inactive</Badge>,
+                                }}
+                                actions={['edit', 'delete']}
+                                customActions={{
+                                    'preview': row => <div>
+                                        <Button
+                                            id={'UncontrolledTooltipPreview-' + row.id}
 
-                                                    <Button className="mr-2"
-                                                        onClick={() => this.props.history.push("/pages/edit/" + page.id)}>
-                                                        <i className="cui-pencil icons  mt-4"></i></Button>
-
-
-                                                    <Button
-                                                        onClick={() => {
-                                                            notifications.confirm('Are you sure ?', () => {
-                                                                this.props.requestPageDelete(page.id)
-                                                            })
-
-                                                        }
-                                                        }
-                                                    >  <i className="cui-trash icons  mt-4"></i></Button>
-
-                                                </ButtonGroup>
-                                            </td>
-                                        </tr>)
-                                        }
-                                    </tbody>
-                                </Table>
-                            }
+                                            onClick={
+                                                () => {
+                                                    this.props.previewPageContent(row.contents)
+                                                }
+                                            }>
+                                            <i className="icon-eye icons "></i>
+                                        </Button>
+                                        <UncontrolledTooltip placement="top" target={'UncontrolledTooltipPreview-' + row.id} >
+                                            View
+                                            </UncontrolledTooltip>
+                                    </div>
+                                }}
+                                baseUrl="/pages"
+                            />
                         </CardBody>
                     </Card>
                 </Col>
@@ -72,4 +61,4 @@ class PagesList extends Component {
 }
 export default connect(state => ({
     pages: state.pages,
-}), { requestPageList, requestPageDelete })(PagesList)
+}), { requestList, requestDelete, previewPageContent })(PagesList)
